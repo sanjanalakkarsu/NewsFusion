@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Genres - NewsFusion</title>
+    <style>
+        body {
+            font-family: 'Pacifico', cursive;
+            background-image: url('p5.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #8B5E3C;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background: #8B5E3C; /* Base background color */
+            color: #EADBC8; /* Text color */
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #A0765E, rgba(165, 97, 42, 0.901)); /* Darker gradient on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+
+        .button:active {
+            transform: translateY(0); /* Reset lift effect */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Reset shadow */
+        }
+
+        .control-button {
+            background: transparent; /* Make background transparent */
+            border: none; /* Remove border */
+            color: #8B5E3C; /* Set text color to match button color */
+            font-size: 24px; /* Increase font size for better visibility */
+            cursor: pointer; /* Change cursor to pointer */
+            margin: 5px; /* Add some margin for spacing */
+            transition: transform 0.2s; /* Smooth transition for hover effect */
+        }
+
+        .control-button:hover {
+            transform: scale(1.1); /* Slightly enlarge on hover */
+            color: #A0765E; /* Change color on hover */
+        }
+
+        .card {
+            background-color: #EADBC8;
+            padding: 15px;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            text-align: left;
+            position: relative;
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+        }
+
+        .comment-section {
+            margin-top: 10px;
+        }
+
+        .comment-section textarea {
+            width: 100%;
+            padding: 5px;
+        }
+
+        .comments-list {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        
+        #note-section {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #EADBC8;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            position: relative; /* Keep everything contained */
+        }
+
+        .keyboard {
+            display: none;
+            grid-template-columns: repeat(8, 1fr); /* Reduce columns for a more balanced layout */
+            gap: 2px; /* Reduce spacing for compactness */
+            padding: 5px;
+            border: 2px solid #000;
+            background: #f9f9f9;
+            justify-content: center;
+            width: 280px; /* Ensure it fits inside */
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 5px;
+        }
+
+        .key {
+            padding: 3px;
+            font-size: 13px; /* Slightly smaller font */
+            border: 1px solid #000;
+            cursor: pointer;
+            background: white;
+            text-align: center;
+            width: 25px; /* Reduce size */
+            height: 25px;
+            line-height: 25px;
+            border-radius: 3px;
+        }
+
+        .key:hover {
+            background: #EADBC8; /* Match the button hover color */
+        }
+
+        #note-text {
+            width: 100%;
+            height: 50px;
+            padding: 5px;
+            border: 1px solid #EADBC8;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to News Genres</h1>
+    </header>
+
+    <div class="content">
+        <div id="genres" class="genres">
+            <button class="button" onclick="fetchGenreNews('sports')">Sports</button>
+            <button class="button" onclick="fetchGenreNews('entertainment')">Entertainment</button>
+            <button class="button" onclick="fetchGenreNews('technology')">Technology</button>
+            <button class="button" onclick="fetchGenreNews('business')">Business</button>
+            <button class="button" onclick="fetchGenreNews('health')">Health</button>
+            <button class="button" onclick="fetchGenreNews('politics')">Politics</button>
+            <button class="button" onclick="fetchGenreNews('world')">World</button>
+            <button class="button" onclick="fetchGenreNews('science')">Science</button>
+            <button class="button" onclick="fetchGenreNews('environment')">Environment</button>
+            <button class="button" onclick="fetchGenreNews('education')">Education</button>
+        </div>
+
+        <div id="loading-indicator"></div>
+
+        <div id="news-container"></div>
+
+        <div id="note-section">
+            <h2>Make a Note</h2>
+            <button class="button" onclick="setLanguage('hindi', 'note')">Note in Hindi</button>
+            <button class="button" onclick="setLanguage('telugu', 'note')">Note in Telugu</button>
+            <textarea id="note-text" placeholder="Write your notes here..."></textarea>
+            <button class="button" onclick="saveNote()">Save Note</button>
+            <button class="button" onclick="toggleNotes()">Show Saved Notes</button>
+            <div class="keyboard" id="noteKeyboard"></div>
+            <div id="saved-notes"></div>
+        </div>
+
+        <div id="saved-headlines">
+            <h2>Saved Headlines</h2>
+            <div id="saved-headlines-container"></div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = "pub_66746cfb16a4a34b5d86dd4722b6d979d8dc1"; // Your NewsData.io API Key
+
+        async function fetchGenreNews(genre) {
+            const loadingIndicator = document.getElementById("loading-indicator");
+            const newsContainer = document.getElementById("news-container");
+
+            // Show loading indicator
+            loadingIndicator.style.display = "block";
+            newsContainer.innerHTML = "";
+
+            try {
+                const url = `https://newsdata.io/api/1/news?apikey=${apiKey}&country=in&language=en&category=${genre}`;
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Hide loading indicator
+                loadingIndicator.style.display = "none";
+
+                if (data.results && data.results.length > 0) {
+                    // Move Voice Button Here
+                    const voiceButton = document.createElement("button");
+                    voiceButton.className = "button";
+                    voiceButton.innerText = "🎤 Speak to Get Summary";
+                    voiceButton.onclick = () => listenForGenreSummary(genre);
+                    newsContainer.appendChild(voiceButton);
+
+                    // Create control buttons for speech
+                    const controlContainer = document.createElement("div");
+                    controlContainer.innerHTML = `
+                        <button id="pauseButton" class="control-button">⏸️</button>
+                        <button id="resumeButton" class="control-button">▶️</button>
+                        <button id="stopButton" class="control-button">⏹️</button>
+                    `;
+                    newsContainer.appendChild(controlContainer);
+
+                    // Add event listeners for control buttons
+                    document.getElementById("pauseButton").onclick = pauseSpeech;
+                    document.getElementById("resumeButton").onclick = resumeSpeech;
+                    document.getElementById("stopButton").onclick = stopSpeech;
+
+                    for (const [index, article] of data.results.entries()) {
+                        const sentimentData = await analyzeSentiment(article.title || article.description || "");
+                        const sentimentColor = getSentimentColor(sentimentData.sentiment);
+
+                        const card = document.createElement("div");
+                        card.className = "card";
+                        card.innerHTML = `
+                            <h3>${article.title}</h3>
+                            <p>${article.description || "No description available."}</p>
+                            <span style="background-color: ${sentimentColor}; padding: 5px; border-radius: 5px; color: white;">
+                                ${sentimentData.sentiment}
+                            </span>
+                            <button class="button" onclick="window.open('${article.link}', '_blank')">Read More</button>
+                            <button class="button" onclick="saveHeadline('${article.title}', '${article.link}')">Save</button>
+                            <div class="comment-section">
+                                <h4>Add a Comment</h4>
+                                <button class="button" onclick="setLanguage('hindi', ${index})">Comment in Hindi</button>
+                                <button class="button" onclick="setLanguage('telugu', ${index})">Comment in Telugu</button>
+                                <textarea id="comment-text-${index}" placeholder="Type your comment here..."></textarea>
+                                <button class="button" onclick="saveComment(${index})">Save Comment</button>
+                                <button class="button" onclick="toggleSavedComments(${index})">Show Saved Comments</button>
+                                <div class="comments-list" id="comments-list-${index}" style="display: none;"></div>
+                                <div class="keyboard" id="commentKeyboard-${index}" style="display: none;"></div> <!-- Add this line -->
+                            </div>
+                        `;
+                        newsContainer.appendChild(card);
+                    }
+                } else {
+                    newsContainer.innerHTML = `<p>No news found for the genre "${genre}" in English from India.</p>`;
+                }
+            } catch (error) {
+                loadingIndicator.style.display = "none";
+                newsContainer.innerHTML = `<p>Error fetching news: ${error.message}. Please check your API key and try again.</p>`;
+                console.error("Error:", error);
+            }
+        }
+
+        // Function to listen for voice commands and read headlines
+        let recognition = null; // Global recognition instance
+        let isSpeaking = false; // Track if speech is ongoing
+
+        function listenForGenreSummary(genre) {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = "en-US";
+            recognition.continuous = false;
+
+            recognition.onstart = function() {
+                document.getElementById("status").innerText = "Listening... Please speak.";
+                console.log("Voice recognition started. Please speak.");
+            };
+
+            recognition.onresult = function(event) {
+                const voiceInput = event.results[0][0].transcript.toLowerCase();
+                console.log("Voice input received:", voiceInput);
+                if (voiceInput.includes(genre.toLowerCase())) {
+                    readHeadlines(genre);
+                } else {
+                    alert(`You said: "${voiceInput}". Please say "Give me ${genre} genre summary."`);
+                }
+            };
+
+            recognition.onerror = function(event) {
+                console.error("Speech recognition error:", event.error);
+                alert("Error recognizing speech. Please try again.");
+            };
+
+            recognition.onend = function() {
+                document.getElementById("status").innerText = "Stopped listening.";
+                console.log("Voice recognition ended.");
+            };
+
+            recognition.start();
+        }
+
+        // Text-to-Speech Function
+        let currentUtterance = null;
+
+        function speakText(text) {
+            if ("speechSynthesis" in window) {
+                if (currentUtterance) {
+                    window.speechSynthesis.cancel();
+                }
+                currentUtterance = new SpeechSynthesisUtterance(text);
+                currentUtterance.onstart = () => {
+                    isSpeaking = true;
+                };
+                currentUtterance.onend = () => {
+                    isSpeaking = false;
+                };
+                window.speechSynthesis.speak(currentUtterance);
+            } else {
+                alert("Your browser does not support text-to-speech.");
+            }
+        }
+
+        // Control functions for speech synthesis
+        function pauseSpeech() {
+            if (isSpeaking) {
+                window.speechSynthesis.pause();
+                console.log("Speech paused.");
+            }
+        }
+
+        function resumeSpeech() {
+            if (isSpeaking && window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+                console.log("Speech resumed.");
+            }
+        }
+
+        function stopSpeech() {
+            if (isSpeaking) {
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                console.log("Speech stopped.");
+            }
+        }
+
+        // Read News Headlines Function
+        function readHeadlines(genre) {
+            const headlines = Array.from(document.querySelectorAll(".card h3"))
+                .map((h3) => h3.textContent)
+                .join(". ");
+
+            if (headlines) {
+                speakText(`${genre} news summary: ${headlines}`);
+            } else {
+                speakText(`No headlines found for ${genre}.`);
+            }
+        }
+
+        // Function to get color based on sentiment
+        function getSentimentColor(sentiment) {
+            switch (sentiment) {
+                case "Positive": return "#4CAF50"; // Green
+                case "Negative": return "#F44336"; // Red
+                default: return "#FFC107"; // Yellow (Neutral)
+            }
+        }
+
+        // Function to analyze sentiment
+        async function analyzeSentiment(text) {
+            try {
+                const response = await fetch("http://127.0.0.1:5000/analyze-sentiment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+
+                const data = await response.json();
+                return data; // { sentiment: "Positive", score: { compound: 0.85, ... } }
+            } catch (error) {
+                console.error("Error analyzing sentiment:", error);
+                return { sentiment: "Neutral", score: {} }; // Default to neutral if API fails
+            }
+        }
+
+        // Save headline to local storage
+        function saveHeadline(title, url) {
+            let savedHeadlines = JSON.parse(localStorage.getItem("savedHeadlines")) || [];
+            savedHeadlines.push({ title, url });
+            localStorage.setItem("savedHeadlines", JSON.stringify(savedHeadlines));
+            displaySavedHeadlines();
+        }
+
+        // Display saved headlines
+        function displaySavedHeadlines() {
+            const savedContainer = document.getElementById("saved-headlines-container");
+            savedContainer.innerHTML = ""; // Clear previous saved headlines
+
+            let savedHeadlines = JSON.parse(localStorage.getItem("savedHeadlines")) || [];
+            savedHeadlines.forEach((headline, index) => {
+                const div = document.createElement("div");
+                div.className = "card";
+                div.innerHTML = `
+                    <h3>${headline.title}</h3>
+                    <button class="button" onclick="window.open('${headline.url}', '_blank')">Read More</button>
+                    <button class="button" onclick="deleteHeadline(${index})">Delete</button>
+                `;
+                savedContainer.appendChild(div);
+            });
+        }
+
+        // Delete saved headline
+        function deleteHeadline(index) {
+            let savedHeadlines = JSON.parse(localStorage.getItem("savedHeadlines")) || [];
+            savedHeadlines.splice(index, 1); // Remove the selected headline
+            localStorage.setItem("savedHeadlines", JSON.stringify(savedHeadlines));
+            displaySavedHeadlines(); // Refresh the display
+        }
+
+        // Save note to localStorage
+        function saveNote() {
+            const noteText = document.getElementById("note-text").value;
+            if (noteText.trim()) {
+                let notes = JSON.parse(localStorage.getItem("notes")) || [];
+                notes.push(noteText);
+                localStorage.setItem("notes", JSON.stringify(notes));
+                document.getElementById("note-text").value = ""; // Clear input after saving
+            }
+        }
+
+        // Toggle saved notes display
+        function toggleNotes() {
+            const savedNotesContainer = document.getElementById("saved-notes");
+            savedNotesContainer.style.display = savedNotesContainer.style.display === "none" || savedNotesContainer.style.display === "" ? "block" : "none";
+            loadNotes();
+        }
+
+        // Load saved notes
+        function loadNotes() {
+            const savedNotesContainer = document.getElementById("saved-notes");
+            savedNotesContainer.innerHTML = ""; // Clear previous notes
+            let notes = JSON.parse(localStorage.getItem("notes")) || [];
+            notes.forEach((note, index) => {
+                savedNotesContainer.innerHTML += `<div class="card"><p>${note}</p><button class="button" onclick="deleteNote(${index})">Delete</button></div>`;
+            });
+        }
+
+        // Delete a specific note
+        function deleteNote(index) {
+            let notes = JSON.parse(localStorage.getItem("notes")) || [];
+            notes.splice(index, 1); // Remove the selected note
+            localStorage.setItem("notes", JSON.stringify(notes));
+            loadNotes(); // Refresh the notes display
+        }
+
+        // Save comment to local storage
+        function saveComment(index) {
+            const commentInput = document.getElementById(`comment-text-${index}`);
+            const commentText = commentInput.value.trim();
+
+            if (!commentText) return; // Prevent saving empty comments
+
+            let savedComments = JSON.parse(localStorage.getItem(`comments-${index}`)) || [];
+            savedComments.push(commentText);
+            localStorage.setItem(`comments-${index}`, JSON.stringify(savedComments));
+
+            commentInput.value = ""; // Clear input after saving
+        }
+
+        // Display comments for a specific headline
+        function displayComments(index) {
+            const commentsContainer = document.getElementById(`comments-list-${index}`);
+            commentsContainer.innerHTML = ""; // Clear previous comments
+
+            let savedComments = JSON.parse(localStorage.getItem(`comments-${index}`)) || [];
+            if (savedComments.length === 0) {
+                commentsContainer.innerHTML = "<p>No comments yet.</p>";
+                return;
+            }
+
+            savedComments.forEach((comment, i) => {
+                const commentDiv = document.createElement("div");
+                commentDiv.innerHTML = `
+                    <p>${comment} <button class="button" onclick="deleteComment(${index}, ${i})">Delete</button></p>
+                `;
+                commentsContainer.appendChild(commentDiv);
+            });
+        }
+
+        // Toggle saved comments display
+        function toggleSavedComments(index) {
+            const commentsContainer = document.getElementById(`comments-list-${index}`);
+            if (commentsContainer.style.display === "none" || commentsContainer.innerHTML === "") {
+                displayComments(index);
+                commentsContainer.style.display = "block";
+            } else {
+                commentsContainer.style.display = "none";
+            }
+        }
+
+        // Delete a specific comment
+        function deleteComment(index, commentIndex) {
+            let savedComments = JSON.parse(localStorage.getItem(`comments-${index}`)) || [];
+            savedComments.splice(commentIndex, 1); // Remove the selected comment
+            localStorage.setItem(`comments-${index}`, JSON.stringify(savedComments));
+            displayComments(index); // Refresh comments display
+        }
+
+        // Virtual Keyboard Functionality
+        const hindiKeys = [
+            "क", "ख", "ग", "घ", "च", "छ", "ज", "झ", "ट", "ठ",
+            "ड", "ढ", "ण", "त", "थ", "द", "ध", "न", "प", "फ",
+            "ब", "भ", "म", "य", "र", "ल", "व", "श", "ष", "स", "ह",
+            "अ", "आ", "इ", "ई", "उ", "ऊ", "ए", "ऐ", "ओ", "औ",
+            "ा", "ि", "ी", "ु", "ू", "े", "ै", "ो", "ौ", "ं", "ः", "्", "।", "॥",
+            "०", "१", "२", "३", "४", "५", "६", "७", "८", "९", "⌫"
+        ];
+
+        const teluguKeys = [
+            "క", "ఖ", "గ", "ఘ", "చ", "ఛ", "జ", "ఝ", "ట", "ఠ",
+            "డ", "ఢ", "ణ", "త", "థ", "ద", "ధ", "న", "ప", "ఫ",
+            "బ", "భ", "మ", "య", "ర", "ల", "వ", "శ", "ష", "స", "హ",
+            "అ", "ఆ", "ఇ", "ఈ", "ఉ", "ఊ", "ఎ", "ఏ", "ఐ", "ఒ", "ఓ", "ఔ",
+            "ా", "ి", "ీ", "ు", "ూ", "ె", "ే", "ై", "ొ", "ో", "ౌ", "ం", "ః", "్", "।", "॥",
+            "౦", "౧", "౨", "౩", "౪", "౫", "౬", "౭", "౮", "౯", "⌫"
+        ];
+
+        function setLanguage(language, target) {
+            let keyboardId, inputFieldId;
+            let keys = language === 'hindi' ? hindiKeys : teluguKeys;
+
+            if (target === 'note') {
+                keyboardId = "noteKeyboard"; // Use the note keyboard
+                inputFieldId = "note-text";  // Target the note textarea
+            } else {
+                keyboardId = `commentKeyboard-${target}`;
+                inputFieldId = `comment-text-${target}`;
+            }
+
+            createKeyboard(keyboardId, keys, inputFieldId);
+        }
+
+        function createKeyboard(containerId, keys, inputFieldId) {
+            document.querySelectorAll('.keyboard').forEach(kb => kb.style.display = "none"); // Hide other keyboards
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            container.innerHTML = ""; 
+            container.style.display = "grid";
+
+            keys.forEach(key => {
+                const btn = document.createElement("div");
+                btn.classList.add("key");
+                btn.textContent = key;
+                btn.onclick = () => insertText(key, inputFieldId);
+                container.appendChild(btn);
+            });
+        }
+
+        function insertText(key, inputFieldId) {
+            let inputField = document.getElementById(inputFieldId);
+            if (inputField) {
+                inputField.value += key;
+            }
+        }
+    </script>
+</body>
+</html>

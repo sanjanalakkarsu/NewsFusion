@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsmania</title>
+    <style>
+body {
+            font-family: 'Pacifico', cursive;
+            background-image: url('p5.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #8B5E3C;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background: #8B5E3C; /* Gradient background */
+            color: #EADBC8;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+            font-size: 16px; /* Increased font size */
+            transition: background 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #A0765E, rgba(165, 97, 42, 0.901)); /* Darker gradient on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+
+        .button:active {
+            transform: translateY(0); /* Reset lift effect */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Reset shadow */
+        }
+
+        .card {
+            background-color:#EADBC8;
+            padding: 15px;
+            margin: 15px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            text-align: left;
+            position: relative;
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+        }
+
+        .card a {
+            text-decoration: none;
+            color: dark brown;
+            font-weight: bold;
+        }
+
+        .comment-section {
+            margin-top: 10px;
+        }
+
+        .comment-section textarea {
+            width: 100%;
+            padding: 5px;
+        }
+
+        .comments-list {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        #note-section {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #EADBC8;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    position: relative; /* Keep everything contained */
+}
+.keyboard {
+    display: none;
+    grid-template-columns: repeat(8, 1fr); /* Reduce columns for a more balanced layout */
+    gap: 2px; /* Reduce spacing for compactness */
+    padding: 5px;
+    border: 2px solid #000;
+    background: #f9f9f9;
+    justify-content: center;
+    width: 280px; /* Ensure it fits inside */
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+}
+
+.key {
+    padding: 3px;
+    font-size: 13px; /* Slightly smaller font */
+    border: 1px solid #000;
+    cursor: pointer;
+    background: white;
+    text-align: center;
+    width: 25px; /* Reduce size */
+    height: 25px;
+    line-height: 25px;
+    border-radius: 3px;
+}
+
+.key:hover {
+    background: #EADBC8;
+}
+
+
+#note-text {
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    border: 1px solid #EADBC8;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+
+        .voice-btn {
+            display: inline-block !important;
+            background-color: #8B5E3C;
+            color: #EADBC8;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px; /* Added border radius for consistency */
+            transition: background 0.3s, transform 0.2s; /* Smooth transitions */
+        }
+
+        .voice-btn:hover {
+            background-color: brown; /* Darker shade on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+
+        .voice-btn:active {
+            transform: translateY(0); /* Reset lift effect */
+        }
+        .news-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between buttons */
+    margin-top: 10px;
+}
+
+.button {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #8b5e3cee;
+    color: #EADBC8;
+    font-weight: bold;
+}
+
+/* Style the icons */
+.icon-button {
+    background: none;  /* Remove background */
+    font-size: 18px;  /* Reduce symbol size */
+    padding: 2px; /* Adjust padding */
+    border: none;
+    cursor: pointer;
+    color: rgba(165, 42, 42, 0.607); /* Match the theme */
+}
+
+/* Hover effect */
+.button:hover {
+    background-color: rgba(165, 42, 42, 0.445);
+}
+.icon-button:hover {
+    color: #8b5e3ca7;
+}
+    </style>
+</head>
+<body>
+    
+ 
+    <div class="content">
+        <div id="language-buttons">
+            <button class="button" onclick="showNewspaperList('english')">English</button>
+            <button class="button" onclick="showNewspaperList('hindi')">Hindi</button>
+            <button class="button" onclick="showNewspaperList('telugu')">Telugu</button>
+        </div>
+
+        <div id="newspaper-list">
+            
+        </div>
+
+        <div id="headlines">
+            <h2>Headlines</h2>
+        </div>
+
+        <div id="saved-headlines">
+            <h2>Saved Headlines</h2>
+            <div id="saved-headlines-container"></div>
+        </div>
+
+        <div id="loading-indicator">
+            
+        </div>
+        <div id="note-section">
+            <h2>Make a Note</h2>
+            <button class="button" onclick="setLanguage('hindi', 'note')">Note in Hindi</button>
+            <button class="button" onclick="setLanguage('telugu', 'note')">Note in Telugu</button>
+            <textarea id="note-text" placeholder="Write your notes here..."></textarea>
+            <button class="button" onclick="saveNote()">Save Note</button>
+            <button class="button" onclick="toggleNotes()">Show Saved Notes</button>
+            <div class="keyboard" id="noteKeyboard"></div>
+            <div id="saved-notes"></div>
+        </div>
+        
+    </div>
+
+    <script>
+        const API_KEY = "2ef48fb93b784f31b463a4a0b8ea66cc";
+        const newspapers = {
+            english: [
+                { name: "CNN", id: "cnn" },
+                { name: "The Times of India", id: "the-times-of-india" }
+            ],
+            hindi: [
+                { name: "Aaj Tak", rss: "https://aajtak.intoday.in/rssfeeds/?id=home" },
+                { name: "Amar Ujala", rss: "https://www.amarujala.com/rss/india-news.xml" }
+            ],
+            telugu: [
+                { name: "TV9", rss: "https://www.tv9telugu.com/rss" },
+                { name: "Telugu OneIndia", rss: "https://telugu.oneindia.com/rss/feeds/telugu-news-fb.xml" }
+            ]
+        };
+
+        function showNewspaperList(language) {
+            const newspapersContainer = document.getElementById("newspaper-list");
+            newspapersContainer.innerHTML = "<h2>Select a Newspaper</h2>";
+
+            newspapers[language].forEach(paper => {
+                const button = document.createElement("button");
+                button.className = "button";
+                button.innerText = paper.name;
+                button.onclick = () => fetchHeadlines(paper, language);
+                newspapersContainer.appendChild(button);
+            });
+        }
+
+        async function fetchHeadlines(paper, language) {
+    const headlinesContainer = document.getElementById("headlines");
+    const loadingIndicator = document.getElementById("loading-indicator");
+    headlinesContainer.innerHTML = ""; // Clear previous headlines
+    loadingIndicator.style.display = "block"; // Show loading indicator
+
+    let url;
+    if (language === 'english') {
+        url = `https://newsapi.org/v2/top-headlines?sources=${paper.id}&apiKey=${API_KEY}`;
+    } else {
+        url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(paper.rss)}`;
+    }
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        loadingIndicator.style.display = "none"; // Hide loading indicator
+
+        const articles = language === 'english' ? data.articles : data.items;
+        if (!articles || articles.length === 0) {
+            headlinesContainer.innerHTML = "<p>No articles found.</p>";
+            return;
+        }
+
+        // Clear previous headlines and display new ones
+        for (const [index, article] of articles.entries()) {
+            const sentimentData = await analyzeSentiment(article.title || article.description || ""); // Analyze sentiment
+            const sentimentColor = getSentimentColor(sentimentData.sentiment);
+
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+                <h3>${article.title}</h3>
+                <p>${article.description || "No description available."}</p>
+                <span style="background-color: ${sentimentColor}; padding: 5px; border-radius: 5px; color: white;">${sentimentData.sentiment}</span>
+                <a href="${article.link || article.url}" target="_blank" class="button">Read More</a>
+                <button class="button" 
+                onclick="saveHeadline('${article.title}', '${article.link || article.url}')">Save</button>
+<div class="news-buttons">
+    <button class="button" onclick="readArticle('${article.title}', '${article.description || "No description available."}', '${language}')">Read Aloud</button>
+    
+    <span class="audio-controls">
+        <button class="icon-button" onclick="pauseSpeech()">⏸️</button>
+        <button class="icon-button" onclick="resumeSpeech()">▶️</button>
+        <button class="icon-button" onclick="stopSpeech()">⏹️</button>
+    </span>
+</div>
+
+                <div class="comment-section">
+                    <h3>Add a Comment</h3>
+                    <button class="button" onclick="setLanguage('hindi', ${index})">Comment in Hindi</button>
+                    <button class="button" onclick="setLanguage('telugu', ${index})">Comment in Telugu</button>
+                    <textarea id="comment-text-${index}" placeholder="Type your comment here..."></textarea>
+                    <button class="button" onclick="saveComment(${index})">Save Comment</button>
+                    <div class="keyboard" id="commentKeyboard-${index}" style="display: none;"></div>
+                    <button class="button" onclick="toggleSavedComments(${index})">Show Saved Comments</button>
+                    <div id="saved-comments-${index}" style="display: none;"></div>
+          
+                    </div>
+            `;
+            headlinesContainer.appendChild(card);
+        }
+    } catch (error) {
+        console.error("Error fetching headlines:", error);
+        loadingIndicator.style.display = "none"; // Hide loading indicator
+        headlinesContainer.innerHTML = "<p>Error fetching headlines. Please try again later.</p>";
+    }
+}
+
+function readArticle(title, description, language) {
+    if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel(); // Stop any ongoing speech
+    }
+
+    let speech = new SpeechSynthesisUtterance();
+    speech.text = title + ". " + description;
+
+    // Set voice based on language
+    if (language === "hindi") {
+        speech.lang = "hi-IN"; // Hindi
+    } else if (language === "telugu") {
+        speech.lang = "te-IN"; // Telugu
+    } else {
+        speech.lang = "en-US"; // Default to English
+    }
+
+    window.speechSynthesis.speak(speech); // Start speaking
+}
+function pauseSpeech() {
+    window.speechSynthesis.pause();
+}
+
+function resumeSpeech() {
+    window.speechSynthesis.resume();
+}
+
+function stopSpeech() {
+    window.speechSynthesis.cancel();
+    currentSpeech = null; // Clear the current speech reference
+}
+// Function to return color based on sentiment
+function getSentimentColor(sentiment) {
+    switch (sentiment) {
+        case "Positive": return "#4CAF50"; // Green
+        case "Negative": return "#F44336"; // Red
+        default: return "#FFC107"; // Yellow (Neutral)
+    }
+}
+        function saveHeadline(title, url) {
+            let savedHeadlines = JSON.parse(localStorage.getItem("savedHeadlines")) || [];
+            savedHeadlines.push({ title, url });
+            localStorage.setItem("savedHeadlines", JSON.stringify(savedHeadlines));
+            displaySavedHeadlines();
+        }
+
+        function displaySavedHeadlines() {
+            const savedContainer = document.getElementById("saved-headlines-container");
+            savedContainer.innerHTML = ""; // Clear previous saved headlines
+
+            let savedHeadlines = JSON.parse(localStorage.getItem("savedHeadlines")) || [];
+            savedHeadlines.forEach((headline, index) => {
+                const div = document.createElement("div");
+                div.className = "card";
+                div.innerHTML = `
+                    <h3>${headline.title}</h3>
+                    <a href="${headline.url}" target="_blank">Read More</a>
+                    <button class="button" onclick="deleteHeadline(${index})">Delete</button>
+                `;
+                savedContainer.appendChild(div);
+            });
+        }
+
+        function deleteHeadline(index) {
+            let savedHeadlines = JSON.parse(localStorage.getItem("savedHeadlines")) || [];
+            savedHeadlines.splice(index, 1); // Remove the selected headline
+            localStorage.setItem("savedHeadlines", JSON.stringify(savedHeadlines));
+            displaySavedHeadlines(); // Refresh the display
+        }
+
+        function saveComment(index) {
+            let commentInput = document.getElementById(`comment-text-${index}`);
+            let commentText = commentInput.value.trim();
+
+            if (!commentText) return; // Prevent saving empty comments
+
+            // Retrieve existing comments
+            let savedComments = JSON.parse(localStorage.getItem(`comments-${index}`)) || [];
+
+            savedComments.push(commentText);
+            localStorage.setItem(`comments-${index}`, JSON.stringify(savedComments));
+
+            // Refresh comments display
+            displayComments(index);
+            commentInput.value = ""; // Clear input field
+        }
+
+        function displayComments(index) {
+            let savedCommentsContainer = document.getElementById(`saved-comments-${index}`);
+            savedCommentsContainer.innerHTML = ""; // Clear previous comments
+
+            let savedComments = JSON.parse(localStorage.getItem(`comments-${index}`)) || [];
+
+            if (savedComments.length === 0) {
+                savedCommentsContainer.innerHTML = "<p>No saved comments</p>";
+                return;
+            }
+
+            savedComments.forEach((comment, i) => {
+                let commentDiv = document.createElement("div");
+                commentDiv.innerHTML = `
+                    <p>${comment} <button onclick="deleteComment(${index}, ${i})">Delete</button></p>
+                `;
+                savedCommentsContainer.appendChild(commentDiv);
+            });
+        }
+
+        function deleteComment(index, commentIndex) {
+            let savedComments = JSON.parse(localStorage.getItem(`comments-${index}`)) || [];
+
+            savedComments.splice(commentIndex, 1); // Remove comment
+
+            localStorage.setItem(`comments-${index}`, JSON.stringify(savedComments));
+            displayComments(index);
+        }
+
+        function toggleSavedComments(index) {
+            let savedCommentsContainer = document.getElementById(`saved-comments-${index}`);
+            if (savedCommentsContainer.style.display === "none" || savedCommentsContainer.innerHTML === "") {
+                displayComments(index);
+                savedCommentsContainer.style.display = "block";
+            } else {
+                savedCommentsContainer.style.display = "none";
+            }
+        }
+
+        // Virtual Keyboard Functionality
+        const hindiKeys = [
+            "क", "ख", "ग", "घ", "च", "छ", "ज", "झ", "ट", "ठ",
+            "ड", "ढ", "ण", "त", "थ", "द", "ध", "न", "प", "फ",
+            "ब", "भ", "म", "य", "र", "ल", "व", "श", "ष", "स", "ह",
+            "अ", "आ", "इ", "ई", "उ", "ऊ", "ए", "ऐ", "ओ", "औ",
+            "ा", "ि", "ी", "ु", "ू", "े", "ै", "ो", "ौ", "ं", "ः", "्", "।", "॥",
+            "०", "१", "२", "३", "४", "५", "६", "७", "८", "९", "⌫"
+        ];
+
+        const teluguKeys = [
+            "క", "ఖ", "గ", "ఘ", "చ", "ఛ", "జ", "ఝ", "ట", "ఠ",
+            "డ", "ఢ", "ణ", "త", "థ", "ద", "ధ", "న", "ప", "ఫ",
+            "బ", "భ", "మ", "య", "ర", "ల", "వ", "శ", "ష", "స", "హ",
+            "అ", "ఆ", "ఇ", "ఈ", "ఉ", "ఊ", "ఎ", "ఏ", "ఐ", "ఒ", "ఓ", "ఔ",
+            "ా", "ి", "ీ", "ు", "ూ", "ె", "ే", "ై", "ొ", "ో", "ౌ", "ం", "ః", "్", "।", "॥",
+            "౦", "౧", "౨", "౩", "౪", "౫", "౬", "౭", "౮", "౯", "⌫"
+        ];
+
+        function setLanguage(language, target) {
+            let keyboardId, inputFieldId;
+            let keys = language === 'hindi' ? hindiKeys : teluguKeys;
+
+            if (target === 'note') {
+                keyboardId = "noteKeyboard"; // Use the note keyboard
+                inputFieldId = "note-text";  // Target the note textarea
+            } else {
+                keyboardId = `commentKeyboard-${target}`;
+                inputFieldId = `comment-text-${target}`;
+            }
+
+            createKeyboard(keyboardId, keys, inputFieldId);
+        }
+
+        function createKeyboard(containerId, keys, inputFieldId) {
+            document.querySelectorAll('.keyboard').forEach(kb => kb.style.display = "none"); // Hide other keyboards
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            container.innerHTML = ""; 
+            container.style.display = "grid";
+
+            keys.forEach(key => {
+                const btn = document.createElement("div");
+                btn.classList.add("key");
+                btn.textContent = key;
+                btn.onclick = () => insertText(key, inputFieldId);
+                container.appendChild(btn);
+            });
+        }
+
+        function insertText(key, inputFieldId) {
+            let inputField = document.getElementById(inputFieldId);
+            if (inputField) {
+                inputField.value += key;
+            }
+        }
+
+        function saveNote() {
+            const noteText = document.getElementById("note-text").value;
+            if (noteText.trim()) {
+                let notes = JSON.parse(localStorage.getItem("notes")) || [];
+                notes.push(noteText);
+                localStorage.setItem("notes", JSON.stringify(notes));
+                document.getElementById("note-text").value = "";
+            }
+        }
+
+        function toggleNotes() {
+            const savedNotesContainer = document.getElementById("saved-notes");
+            if (savedNotesContainer.style.display === "none" || savedNotesContainer.style.display === "") {
+                loadNotes();
+                savedNotesContainer.style.display = "block";
+            } else {
+                savedNotesContainer.style.display = "none";
+            }
+        }
+
+        function loadNotes() {
+            const savedNotesContainer = document.getElementById("saved-notes");
+            savedNotesContainer.innerHTML = "";
+            let notes = JSON.parse(localStorage.getItem("notes")) || [];
+            notes.forEach((note, index) => {
+                savedNotesContainer.innerHTML += `<div class="card"><p>${note}</p><button class="button" onclick="deleteNote(${index})">Delete</button></div>`;
+            });
+        }
+
+        function deleteNote(index) {
+            let notes = JSON.parse(localStorage.getItem("notes")) || [];
+            notes.splice(index, 1);
+            localStorage.setItem("notes", JSON.stringify(notes));
+            loadNotes();
+        }
+
+        async function analyzeSentiment(text) {
+    try {
+        const response = await fetch("http://127.0.0.1:5000/analyze-sentiment", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ text: text })
+        });
+
+        const data = await response.json();
+        return data; // { sentiment: "Positive", score: { compound: 0.85, ... } }
+    } catch (error) {
+        console.error("Error analyzing sentiment:", error);
+        return { sentiment: "Neutral", score: {} }; // Default to neutral if API fails
+    }
+}
+        // Load comments on page reload
+        window.onload = function () {
+            document.querySelectorAll("[id^='saved-comments-']").forEach(container => {
+                let index = container.id.split("-")[2]; // Extract index
+                displayComments(index);
+                container.style.display = "none"; // Hide by default
+            });
+            displaySavedHeadlines(); // Load saved headlines on page load
+        };
+
+        function displayNews(data) {
+    
+    console.log("displayNews function executed"); // Debugging step
+
+    const newsContainer = document.getElementById("news-container");
+    newsContainer.innerHTML = ""; // Clear previous content
+
+    data.forEach(news => {
+        const newsDiv = document.createElement("div");
+        newsDiv.classList.add("news-item");
+
+        // Create headline
+        const headline = document.createElement("h3");
+        headline.textContent = news.headline;
+
+        // Create summary
+        const summary = document.createElement("p");
+        summary.textContent = news.summary;
+
+        // Create voice button
+        const voiceButton = document.createElement("button");
+        voiceButton.textContent = "🔊 Listen";
+        voiceButton.classList.add("voice-btn");
+
+        // Add event listener for speech synthesis
+        voiceButton.addEventListener("click", function () {
+            const speech = new SpeechSynthesisUtterance(`${news.headline}. ${news.summary}`);
+            speech.lang = "en-US"; // Adjust language if needed
+            window.speechSynthesis.speak(speech);
+        });
+
+        // Append elements
+        newsDiv.appendChild(headline);
+        newsDiv.appendChild(summary);
+        newsDiv.appendChild(voiceButton); // Ensure the button is added
+        newsContainer.appendChild(newsDiv);
+    });
+}
+
+    </script>
+</body>
+</html>

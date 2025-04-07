@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('images/img6.jpg'); /* Use the actual path to your background image */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .signup-container {
+            background: rgba(255, 255, 255, 0.2); /* Transparent background */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: transparent;
+            backdrop-filter: blur(10px); /* Blur effect for background */
+            width: 300px; /* Width of the signup container */
+            text-align: center; /* Center align text */
+        }
+        .signup-container h2 {
+            margin-bottom: 20px;
+            color: black; /* White text color for better visibility */
+        }
+        .signup-container label {
+            display: block;
+            margin-bottom: 5px;
+            color: black; /* White text color for better visibility */
+        }
+        .signup-container input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 2px;
+            background: white; /* Transparent background */
+        }
+        .signup-container button {
+            width: 80%;
+            padding: 10px;
+            background: white; /* Transparent background */
+            margin-bottom: 5px;
+            color: black;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .signup-container button:hover {
+            background-color: white;
+        }
+        .signup-container p {
+            margin-top: 15px;
+            color: black; /* White text color for better visibility */
+        }
+        .signup-container a {
+            color: black; /* White text color for better visibility */
+            text-decoration: none;
+        }
+        .signup-container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>Sign Up Page</h2>
+        <form id="signupForm" onsubmit="submitSignup(event)">
+            <label>First Name</label>
+            <input type="text" name="first_name" required>
+            <label>Last Name</label>
+            <input type="text" name="last_name" required>
+            <label>Gender</label>
+            <input type="text" name="gender" required>
+            <label>Contact</label>
+            <input type="tel" name="contact" required>
+            <label>Address</label>
+            <input type="text" name="address" required>
+            <label>Email</label>
+            <input type="email" name="email" required>
+            <label>Password</label>
+            <input type="password" name="password" required>
+            <button type="submit">Submit</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login Here</a></p>
+    </div>
+
+    <script>
+        function submitSignup(event) {
+            event.preventDefault();
+
+            const formData = {
+                firstName: document.querySelector('input[name="first_name"]').value,
+                lastName: document.querySelector('input[name="last_name"]').value,
+                gender: document.querySelector('input[name="gender"]').value,
+                contact: document.querySelector('input[name="contact"]').value,
+                address: document.querySelector('input[name="address"]').value,
+                email: document.querySelector('input[name="email"]').value,
+                password: document.querySelector('input[name="password"]').value
+            };
+
+            localStorage.setItem('user', JSON.stringify(formData));
+
+            alert('Signup successful! You can now log in.');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

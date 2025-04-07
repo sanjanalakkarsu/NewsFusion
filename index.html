@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsFusion</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: url('img1.jpg') no-repeat center center/cover;
+            color: #333;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 4rem;
+            margin-top: 12%;
+            color: rgba(92, 6, 6, 0.622);
+        }
+
+        .tagline {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #444;
+            margin-top: -15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #d7000043;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 25px;
+            margin: 5px;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #b5002d9e;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap">
+</head>
+<body>
+    <h1>NEWSFUSION</h1>
+    <p class="tagline">Bringing the world closer, one story at a time.</p>
+    <button onclick="redirectToNewspapers()">Newspapers</button>
+    <button onclick="redirectToGenre()">Genres</button>
+    <button onclick="redirectToSearch()">Search</button>
+    <script>
+        // Redirect to newspaper.html
+        function redirectToNewspapers() {
+            window.location.href = `newspaper.html`;
+        }
+
+        // Redirect to genre.html
+        function redirectToGenre() {
+            window.location.href = `genre.html`;
+        }
+
+        // Redirect to search.html
+        function redirectToSearch() {
+            window.location.href = `search.html`;
+        }
+    </script>
+</body>
+</html>
